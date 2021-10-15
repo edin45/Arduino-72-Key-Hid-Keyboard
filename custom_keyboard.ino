@@ -1,7 +1,15 @@
+uint8_t buf[8] = { 0 };
+
 int serialPos = 0;
 
 void setup() {
   Serial.begin(9600);
+  
+  pinMode(A0, INPUT_PULLUP);
+  pinMode(A1, INPUT_PULLUP);
+  pinMode(A2, INPUT_PULLUP);
+  pinMode(A3, INPUT_PULLUP);
+  pinMode(A4, INPUT_PULLUP);
 
   pinMode(0, INPUT_PULLUP);
   pinMode(1, INPUT_PULLUP);
@@ -18,17 +26,9 @@ void setup() {
   pinMode(12, INPUT_PULLUP);
   pinMode(13, INPUT_PULLUP);
 
-  pinMode(A0, INPUT_PULLUP);
-  pinMode(A1, INPUT_PULLUP);
-  pinMode(A2, INPUT_PULLUP);
-  pinMode(A3, INPUT_PULLUP);
-  pinMode(A4, INPUT_PULLUP);
-
 }
 
 void loop() {
-
-  uint8_t buf[8] = { 0 };
 
   if (digitalRead(2) == HIGH) {
     buf[serialPos + 2] = 225; //Serial.println("lshift");
@@ -354,17 +354,17 @@ void loop() {
   Serial.write(buf, 8);
 
 
-  //releaseKey();
+  releaseKey();
 
 
 }
 
-//void releaseKey()
-//{
-  //buf = { 0 };
-  //buf[0] = 0;
-  //buf[2] = 0;
-  //serialPos++;
+void releaseKey()
+{
+  memset(buf, 0, sizeof(buf));
+  buf[0] = 0;
+  buf[2] = 0;
+  serialPos = 0;
   //Serial.println("release");
-  //Serial.write(buf, 8); // Send Release key
-//}
+  Serial.write(buf, 8); // Send Release key
+}
